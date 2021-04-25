@@ -26,4 +26,4 @@ def test_modulo():
 
 
 def test_countChars():
-    assert True is Calc.countChars("KalleAnka2")
+    assert True is Calc.countChars("KalleAnka3")
