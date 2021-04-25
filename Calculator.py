@@ -23,6 +23,8 @@ class Calc:
     def modulo(x, y):
         return x % y
 
-    # String length
+    # Checking number of letters in string
+    # Returns true if counter is above 9
     def countChars(str):
-        return bool(len(str) > 9)
+        counter = sum(1 for i in str if i.isalpha())
+        return bool(counter > 9)
