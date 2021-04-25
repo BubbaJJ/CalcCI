@@ -19,3 +19,11 @@ def test_div():
 
 def test_power():
     assert 9 == Calc.power(3, 2)
+
+
+def test_modulo():
+    assert 0 == Calc.modulo(10, 2)
+
+
+def test_countChars():
+    assert True is Calc.countChars("KalleAnka2")
