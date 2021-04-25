@@ -14,3 +14,7 @@ class Calc:
     # Division
     def div(x, y):
         return x / y
+
+    # Squared / Power
+    def power(x, y):
+        return pow(x, y)

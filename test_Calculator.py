@@ -15,3 +15,7 @@ def test_mul():
 
 def test_div():
     assert 12 == Calc.div(48, 4)
+
+
+def test_power():
+    assert 9 == Calc.power(3, 2)
