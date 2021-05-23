@@ -1,5 +1,6 @@
 from Calculator import Calc
 from enum import Enum
+from datetime import datetime
 
 
 class operators(Enum):
@@ -10,74 +11,110 @@ class operators(Enum):
     Modulus = 5
     Power = 6
 
+def output_to_txt(filename, data):
+    with open(filename, 'a') as f:
+        f.write(data)
 
-def welcome():
-    print("Welcome to the world of calculations! \n")
-    # name = input("What's your name? ")
-    # print("Okay, " + name + "! Are you ready for some calculations?!\n")
+def main():
+    def welcome():
+        print("Welcome to the world of calculations! \n")
 
 
-def calculations():
-    print('''Today's options are:
-    1. ''' + operators(1).name + '''
-    2. ''' + operators(2).name + '''
-    3. ''' + operators(3).name + '''
-    4. ''' + operators(4).name + '''
-    5. ''' + operators(5).name + '''
-    6. ''' + operators(6).name)
+    def calculations():
+        ask_for_name()
+        show_options()
+        operator = set_operator()
+        x, y = get_numbers()
+        do_calculation(operator, x, y)
+        ask_to_run_again()
+    
+    def ask_for_name():
+        name = input("What's your name? ")
+        print("Okay, " + name + "! Are you ready for some calculations?!\n")
 
-    operator = operation()
+    def get_numbers():
+        x = int(input("Pick your first number: "))
+        y = int(input("Now pick your second number: "))
+        return x, y
 
-    x = int(input("Pick your first number: "))
-    y = int(input("Nice! Now pick your second number: "))
-
-    if operator == 1:
-        print('{} + {} = {}'.format(x, y, Calc.add(x, y)))
-
-    elif operator == 2:
-        print('{} - {} = {}'.format(x, y, Calc.sub(x, y)))
-
-    elif operator == 3:
-        print('{} * {} = {}'.format(x, y, Calc.mul(x, y)))
-
-    elif operator == 4:
-        if (y == 0):
-            print("Nice try...")
+    def set_operator():
+        choice = int(
+            input("\nWhat would you like to do?(1-" + str(len(operators)) + "): "))
+        if choice > 0 and choice < 7:
+            print(operators(choice).name + " it is!\n")
+            return choice
         else:
-            print('{} / {} = {}'.format(x, y, Calc.div(x, y)))
+            print("Are you sure...?")
+            set_operator()
 
-    elif operator == 5:
-        print('{} % {} = {}'.format(x, y, Calc.modulo(x, y)))
+    def do_calculation(operator, x, y):
+        if operator == 1:
+            result = Calc.add(x,y)
+            print('{} + {} = {}'.format(x, y, result))
 
-    elif operator == 6:
-        print('{} ** {} = {}'.format(x, y, Calc.power(x, y)))
+        elif operator == 2:
+            result = Calc.sub(x,y)
+            print('{} - {} = {}'.format(x, y, result))
 
-    again()
+        elif operator == 3:
+            result = Calc.mul(x,y)
+            print('{} * {} = {}'.format(x, y, result))
+
+        elif operator == 4:
+            if (y == 0):
+                result = "Nice try..."
+                print(result)
+            else:
+                result = Calc.div(x,y)
+                print('{} / {} = {}'.format(x, y, result))
+
+        elif operator == 5:
+            result = Calc.modulo(x,y)
+            print('{} % {} = {}'.format(x, y, result))
+
+        elif operator == 6:
+            result = Calc.power(x,y)
+            print('{} ** {} = {}'.format(x, y, result))
+
+        data = data_to_output(operator, x, y, result)
+        output_to_txt('history.txt', data)
+
+    def show_options():
+        print('''Today's options are:
+        1. ''' + operators(1).name + '''
+        2. ''' + operators(2).name + '''
+        3. ''' + operators(3).name + '''
+        4. ''' + operators(4).name + '''
+        5. ''' + operators(5).name + '''
+        6. ''' + operators(6).name)
+
+    def data_to_output(operator, x, y, result) -> str:
+        row_break = "\n"
+        output_data = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + row_break
+        output_data += "Chosen operator: " + operators(operator).name + row_break
+        output_data += "First number: " + str(x) + row_break
+        output_data += "Second number: " + str(y) + row_break
+        output_data += "Result: " + str(result) + row_break
+        output_data += row_break
+
+        return output_data
+        
+
+    def ask_to_run_again():
+        print("That concludes our magical adventure together!")
+        answer = input("Wanna try again?! (Y/N) ")
+        if answer.upper() == "Y":
+            calculations()
+        elif answer.upper() == "N":
+            print("\nWell... I don't like you either.. so.. bye!\n")
+        else:
+            print("ok, let's try this again... \n")
+            print("So what I said was: ", end="", flush=True)
+            ask_to_run_again()
 
 
-def operation():
-    choice = int(
-        input("\nWhat would you like to do?(1-" + str(len(operators)) + "): "))
-    if choice > 0 and choice < 7:
-        print(operators(choice).name + " it is!\n")
-        return choice
-    else:
-        print("Are you sure...?")
-        operation()
+    welcome()
+    calculations()
 
-
-def again():
-    print("That concludes our magical adventure together!")
-    answer = input("Wanna try again?! (Y/N) ")
-    if answer.upper() == "Y":
-        calculations()
-    elif answer.upper() == "N":
-        print("\nWell... I don't like you either.. so.. bye!\n")
-    else:
-        print("ok, let's try this again... \n")
-        print("So what I said was: ", end="", flush=True)
-        again()
-
-
-welcome()
-calculations()
+if __name__ == '__main__':
+    main()
